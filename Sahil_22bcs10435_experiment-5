@@ -1,0 +1,133 @@
+Q1. Sorting and Searching	Easy	Merge Sorted Array
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int midx = m - 1;
+        int nidx = n - 1;
+        int right = m + n - 1;
+
+        while (nidx >= 0) {
+            if (midx >= 0 && nums1[midx] > nums2[nidx]) {
+                nums1[right] = nums1[midx];
+                midx--;
+            } else {
+                nums1[right] = nums2[nidx];
+                nidx--;
+            }
+            right--;
+        }        
+    }
+};
+
+Output
+[1,2,2,3,5,6]
+
+Q2. First Bad Version
+
+// The API isBadVersion is defined for you.
+ bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        
+        int low=1;
+        int high=n;
+
+        while(low<=high){
+            int mid=low+(high-low)/2;
+
+            int version=isBadVersion(mid);
+            if(version==true){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+
+        return low;
+    }
+};
+Output
+4
+
+Q3. Sort Colors
+class Solution {
+public:
+    void sortColors(vector<int>& arr) {
+        int n = arr.size();
+        int low = 0 , mid = 0 , high = n-1;
+        
+        while(mid <= high){
+            if(arr[mid] == 0){
+                swap(arr[mid] , arr[low]);
+                mid++;
+                low++;
+            }else if(arr[mid] == 1){
+                mid++;
+            }else{
+                swap(arr[mid],arr[high]);
+                high--;
+            }
+        }
+    }
+};
+Output
+[0,0,1,1,2,2]
+
+Q4. Medium	Top K frequent elements
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> counter;
+        for (int n : nums) {
+            counter[n]++;
+        }
+        
+        auto comp = [](pair<int, int>& a, pair<int, int>& b) {
+            return a.second < b.second;
+        };
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(comp)> heap(comp);
+        
+        for (auto& entry : counter) {
+            heap.push({entry.first, entry.second});
+        }
+        
+        vector<int> res;
+        while (k-- > 0) {
+            res.push_back(heap.top().first);
+            heap.pop();
+        }
+        
+        return res;        
+    }
+};
+Output
+[1,2]
+Q5. Kth Largest element in an array
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        for(int i = 0; i < k; i++)
+        {
+            minHeap.push(nums[i]);
+        }
+
+        for(int i = k; i < nums.size(); i++)
+        {
+            if(nums[i] > minHeap.top())
+            {
+                minHeap.pop();
+                minHeap.push(nums[i]);
+            }
+        }
+        return minHeap.top();
+    }
+};
+Output
+5
+
+Q6. Find Peak Element
